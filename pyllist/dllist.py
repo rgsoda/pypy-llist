@@ -44,28 +44,6 @@ class dllistnode(object):
         return '<dllistnode(' + repr(self.__value) + ')>'
 
 
-class dllistiterator(object):
-    __slots__ = ('__current_node',)
-
-    def __init__(self, list):
-        if not isinstance(list, dllist):
-            raise TypeError('dllist argument expected')
-
-        self.__current_node = list.first
-
-    def next(self):
-        if self.__current_node is None:
-            raise StopIteration
-
-        value = self.__current_node.value
-        self.__current_node = self.__current_node.next
-
-        return value
-
-    def __iter__(self):
-        return self
-
-
 class dllist(object):
     __slots__ = ('__first', '__last', '__size',
                  '__last_access_node', '__last_access_idx')
@@ -250,7 +228,10 @@ class dllist(object):
             return 'dllist()'
 
     def __iter__(self):
-        return dllistiterator(self)
+        current = self.__first
+        while current is not None:
+            yield current.value
+            current = current.next
 
     def __getitem__(self, index):
         return self.__get_node_at(index)

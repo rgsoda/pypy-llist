@@ -3,7 +3,7 @@
 from weakref import ref
 
 
-class SLLNode:
+class sllistnode:
     """ Node model """
     __slots__ = ['next', 'value', 'weakref']
 
@@ -22,8 +22,8 @@ class SLLNode:
         return str(self.value)
 
 
-class SLList:
-    """ SLList model """
+class sllist:
+    """ sllist model """
     __slots__ = ['first', 'last', 'size']
 
     def __init__(self, iterable=None):
@@ -40,7 +40,7 @@ class SLList:
     def __iter__(self):
         curr = self.first
         while curr:
-            yield curr
+            yield curr.value
             curr = curr.next
 
     def __str__(self):
@@ -58,13 +58,13 @@ class SLList:
 
     def __setitem__(self, index, value):
         node = self.__getitem__(index)
-        if isinstance(value, SLLNode):
+        if isinstance(value, sllistnode):
             value = value.value
         node.value = value
 
     def __get_prev(self, node):
-        if not isinstance(node, SLLNode):
-            raise TypeError("Object must be Node instance")
+        if not isinstance(node, sllistnode):
+            raise TypeError("Object must be sllistnode instance")
         if not self.first:
             raise TypeError("List is empty")
         if self.first == node:
@@ -78,11 +78,11 @@ class SLList:
         return prev
 
     def appendleft(self, value):
-        if isinstance(value, SLLNode):
+        if isinstance(value, sllistnode):
             value = value.value
 
         head = self.first
-        new_node = SLLNode(value=value, next=head, weakref=ref(self))
+        new_node = sllistnode(value=value, next=head, weakref=ref(self))
         self.first = new_node
         return new_node
 
@@ -90,10 +90,10 @@ class SLList:
         return self.appendright(value)
 
     def appendright(self, value):
-        if isinstance(value, SLLNode):
+        if isinstance(value, sllistnode):
             value = value.value
 
-        new_node = SLLNode(value=value, next=None, weakref=ref(self))
+        new_node = sllistnode(value=value, next=None, weakref=ref(self))
         if not self.first:
             self.first = new_node
         else:
@@ -146,7 +146,7 @@ class SLList:
         return rval
 
 if __name__ == '__main__':
-    l = SLList(range(100, 115))
+    l = sllist(range(100, 115))
     print "Initialized list", l
     for i in range(0, 10):
         l.appendleft(i)
