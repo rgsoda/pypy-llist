@@ -78,6 +78,13 @@ class testdllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
+    def test_iter_empty(self):
+        ll = dllist()
+        count = 0
+        for val in ll:
+            count += 1
+        self.assertEqual(count, 0)
+
     def test_insert_value(self):
         ll = dllist(xrange(4))
         ref = dllist([0, 1, 2, 3, 10])
