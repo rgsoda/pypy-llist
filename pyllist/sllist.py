@@ -197,7 +197,6 @@ class sllist(object):
     def appendright(self, value):
         if isinstance(value, sllistnode):
             value = value.value
-
         new_node = sllistnode(value=value, next=None, owner=self)
         if not self.__first:
             self.__first = new_node
