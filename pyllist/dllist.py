@@ -233,6 +233,12 @@ class dllist(object):
             yield current.value
             current = current.next
 
+    def __reversed__(self):
+        current = self.__last
+        while current is not None:
+            yield current.value
+            current = current.prev
+
     def __getitem__(self, index):
         return self.__get_node_at(index)
 

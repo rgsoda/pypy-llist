@@ -85,6 +85,22 @@ class testdllist(unittest.TestCase):
             count += 1
         self.assertEqual(count, 0)
 
+    def test_reversed(self):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        idx = len(ref) - 1
+        for val in reversed(ll):
+            self.assertEqual(val, ref[idx])
+            idx -= 1
+        self.assertEqual(idx, -1)
+
+    def test_reversed_empty(self):
+        ll = dllist()
+        count = 0
+        for val in reversed(ll):
+            count += 1
+        self.assertEqual(count, 0)
+
     def test_insert_value(self):
         ll = dllist(xrange(4))
         ref = dllist([0, 1, 2, 3, 10])
