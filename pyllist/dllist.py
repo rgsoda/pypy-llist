@@ -78,6 +78,50 @@ class dllist(object):
     def size(self):
         return self.__size
 
+    def nodeat(self, index):
+        if not isinstance(index, int):
+            raise TypeError('invalid index type')
+
+        if index < 0:
+            index = self.__size + index
+
+        if index < 0 or index >= self.__size:
+            raise IndexError('index out of range')
+
+        middle = index / 2
+        if index <= middle:
+            node = self.__first
+            start_idx = 0
+            reverse_dir = False
+        else:
+            node = self.__last
+            start_idx = self.__size - 1
+            reverse_dir = True
+
+        if self.__last_access_node is not None and \
+                self.__last_access_idx >= 0 and \
+                abs(index - self.__last_access_idx) < middle:
+            node = self.__last_access_node
+            start_idx = self.__last_access_idx
+            if index < start_idx:
+                reverse_dir = True
+            else:
+                reverse_dir = False
+
+        if not reverse_dir:
+            while start_idx < index:
+                node = node.next
+                start_idx += 1
+        else:
+            while start_idx > index:
+                node = node.prev
+                start_idx -= 1
+
+        self.__last_access_node = node
+        self.__last_access_idx = index
+
+        return node
+
     def appendleft(self, x):
         node = dllistnode(x, None, self.__first, self)
 
@@ -240,59 +284,16 @@ class dllist(object):
             current = current.prev
 
     def __getitem__(self, index):
-        return self.__get_node_at(index)
+        return self.nodeat(index).value
 
     def __setitem__(self, index, value):
-        self.__get_node_at(index).value = value
+        self.nodeat(index).value = value
 
     def __delitem__(self, index):
-        node = self.__get_node_at(index)
+        node = self.nodeat(index)
         self.remove(node)
 
         if node.prev is not None and index > 0:
             self.__last_access_node = node.prev
             self.__last_access_idx = index - 1
 
-    def __get_node_at(self, index):
-        if not isinstance(index, int):
-            raise TypeError('invalid index type')
-
-        if index < 0:
-            index = self.__size + index
-
-        if index < 0 or index >= self.__size:
-            raise IndexError('index out of range')
-
-        middle = index / 2
-        if index <= middle:
-            node = self.__first
-            start_idx = 0
-            reverse_dir = False
-        else:
-            node = self.__last
-            start_idx = self.__size - 1
-            reverse_dir = True
-
-        if self.__last_access_node is not None and \
-                self.__last_access_idx >= 0 and \
-                abs(index - self.__last_access_idx) < middle:
-            node = self.__last_access_node
-            start_idx = self.__last_access_idx
-            if index < start_idx:
-                reverse_dir = True
-            else:
-                reverse_dir = False
-
-        if not reverse_dir:
-            while start_idx < index:
-                node = node.next
-                start_idx += 1
-        else:
-            while start_idx > index:
-                node = node.prev
-                start_idx -= 1
-
-        self.__last_access_node = node
-        self.__last_access_idx = index
-
-        return node

@@ -54,27 +54,36 @@ class sllist(object):
     def size(self):
         return self.__size
 
+    def nodeat(self, index):
+        if not isinstance(index, int):
+            raise TypeError('invalid index type')
+
+        if index < 0:
+            index = self.__size + index
+
+        if index < 0 or index >= self.__size:
+            raise IndexError('index out of range')
+
+        if not self.__first:
+            raise IndexError("index out of range")
+
+        curr = self.__first
+        i = 0
+        while(curr != None and i < index):
+            curr = curr.next
+            i += 1
+        return curr
+
     def __extend(self, iterable):
         for item in iterable:
             self.appendright(item)
 
     def __delitem__(self, index):
-        to_del = self.__getitem__(index)
+        to_del = self.nodeat(index)
         self.remove(to_del)
 
     def __getitem__(self, index):
-        if abs(index) >= self.__size:
-            raise IndexError("list index out of range")
-        i = 0
-        if index < 0:
-            index = self.__size + index
-        if not self.__first:
-            raise IndexError("list index out of range")
-        curr = self.__first
-        while(curr != None and i < index):
-            curr = curr.next
-            i += 1
-        return curr
+        return self.nodeat(index).value
 
     def __len__(self):
         return self.__size
