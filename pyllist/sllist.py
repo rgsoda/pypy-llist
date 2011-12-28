@@ -32,28 +32,6 @@ class sllistnode(object):
         return "<sllistnode(%s)>" % repr(self.__value)
 
 
-class sllistiterator(object):
-    __slots__ = ('__current_node', )
-
-    def __init__(self, list):
-        if not isinstance(list, sllist):
-            raise TypeError('sllist argument expected')
-
-        self.__current_node = list.first
-
-    def next(self):
-        if self.__current_node is None:
-            raise StopIteration
-
-        value = self.__current_node.value
-        self.__current_node = self.__current_node.next
-
-        return value
-
-    def __iter__(self):
-        return self
-
-
 class sllist(object):
     __slots__ = ('__first', '__last', '__size', )
 
@@ -86,12 +64,12 @@ class sllist(object):
 
     def __getitem__(self, index):
         if abs(index) >= self.__size:
-            raise IndexError("list index out of range (%s) %s" % (index, self))
+            raise IndexError("list index out of range")
         i = 0
         if index < 0:
             index = self.__size + index
         if not self.__first:
-            raise IndexError("list index out of range (%s) %s" % (index, self))
+            raise IndexError("list index out of range")
         curr = self.__first
         while(curr != None and i < index):
             curr = curr.next
@@ -123,18 +101,21 @@ class sllist(object):
 
     def __str__(self):
         if self.__first is not None:
-            return 'sllist([' + ', '.join((str(x) for x in self)) + '])'
+            return "sllist([%s])" % ', '.join((str(x) for x in self))
         else:
             return 'sllist()'
 
     def __repr__(self):
         if self.__first is not None:
-            return 'sllist([' + ', '.join((repr(x) for x in self)) + '])'
+            return "sllist([%s])" % ', '.join((repr(x) for x in self))
         else:
             return 'sllist()'
 
     def __iter__(self):
-        return sllistiterator(self)
+        current = self.__first
+        while current is not None:
+            yield current.value
+            current = current.next
 
     def __get_prev(self, node):
         if not isinstance(node, sllistnode):
