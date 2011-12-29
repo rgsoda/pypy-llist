@@ -126,27 +126,44 @@ class testdllist(unittest.TestCase):
     def test_insert_value(self):
         ll = dllist(xrange(4))
         ref = dllist([0, 1, 2, 3, 10])
+        prev = ll.nodeat(-1)
         arg_node = dllistnode(10)
         new_node = ll.insert(arg_node)
         self.assertNotEqual(new_node, arg_node)
         self.assertEqual(new_node.value, 10)
-        self.assertEqual(new_node.prev, ll.nodeat(-2))
+        self.assertEqual(new_node.prev, prev)
         self.assertEqual(new_node.next, None)
-        self.assertEqual(ll.nodeat(-2).next, new_node)
+        self.assertEqual(prev.next, new_node)
         self.assertEqual(new_node, ll.last)
         self.assertEqual(ll, ref)
 
     def test_insert_value_before(self):
         ll = dllist(xrange(4))
         ref = dllist([0, 1, 10, 2, 3])
+        prev = ll.nodeat(1)
+        next = ll.nodeat(2)
         arg_node = dllistnode(10)
         new_node = ll.insert(arg_node, ll.nodeat(2))
         self.assertNotEqual(new_node, arg_node)
         self.assertEqual(new_node.value, 10)
-        self.assertEqual(new_node.prev, ll.nodeat(1))
-        self.assertEqual(new_node.next, ll.nodeat(3))
-        self.assertEqual(ll.nodeat(1).next, new_node)
-        self.assertEqual(ll.nodeat(3).prev, new_node)
+        self.assertEqual(new_node.prev, prev)
+        self.assertEqual(new_node.next, next)
+        self.assertEqual(prev.next, new_node)
+        self.assertEqual(next.prev, new_node)
+        self.assertEqual(ll, ref)
+
+    def test_insert_value_before_first(self):
+        ll = dllist(xrange(4))
+        ref = dllist([10, 0, 1, 2, 3])
+        next = ll.nodeat(0)
+        arg_node = dllistnode(10)
+        new_node = ll.insert(arg_node, ll.nodeat(0))
+        self.assertNotEqual(new_node, arg_node)
+        self.assertEqual(new_node.value, 10)
+        self.assertEqual(new_node.prev, None)
+        self.assertEqual(new_node.next, next)
+        self.assertEqual(next.prev, new_node)
+        self.assertEqual(new_node, ll.first)
         self.assertEqual(ll, ref)
 
     def test_insert_invalid_ref(self):
@@ -393,7 +410,7 @@ class testsllist(unittest.TestCase):
             count += 1
         self.assertEqual(count, 0)
 
-    def test_insert_value(self):
+    def test_insert_value_after_last(self):
         ll = sllist(xrange(4))
         ref = sllist([0, 1, 2, 3, 10])
         arg_node = sllistnode(10)
@@ -408,12 +425,26 @@ class testsllist(unittest.TestCase):
     def test_insert_value_before(self):
         ll = sllist(xrange(4))
         ref = sllist([0, 1, 10, 2, 3])
+        prev = ll.nodeat(1)
+        next = ll.nodeat(2)
         arg_node = sllistnode(10)
         new_node = ll.insert(arg_node, ll.nodeat(2))
         self.assertNotEqual(new_node, arg_node)
         self.assertEqual(new_node.value, 10)
-        self.assertEqual(new_node.next, ll.nodeat(3))
-        self.assertEqual(ll.nodeat(1).next, new_node)
+        self.assertEqual(new_node.next, next)
+        self.assertEqual(prev.next, new_node)
+        self.assertEqual(ll, ref)
+
+    def test_insert_value_before_first(self):
+        ll = sllist(xrange(4))
+        ref = sllist([10, 0, 1, 2, 3])
+        next = ll.nodeat(0)
+        arg_node = sllistnode(10)
+        new_node = ll.insert(arg_node, ll.nodeat(0))
+        self.assertNotEqual(new_node, arg_node)
+        self.assertEqual(new_node.value, 10)
+        self.assertEqual(new_node.next, next)
+        self.assertEqual(new_node, ll.first)
         self.assertEqual(ll, ref)
 
     def test_insert_invalid_ref(self):
