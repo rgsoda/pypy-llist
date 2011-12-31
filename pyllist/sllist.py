@@ -228,7 +228,7 @@ class sllist(object):
             raise TypeError("node must be a sllistnode")
         if self.__first is None:
             raise RuntimeError("List is empty")
-        if node.owner != self:
+        if node.owner is not self:
             raise RuntimeError("Node is not element of this list")
         prev = self.__get_prev(node)
         if not prev:
