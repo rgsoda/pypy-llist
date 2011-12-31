@@ -157,6 +157,8 @@ class sllist(object):
     def insertafter(self, node, value):
         if not isinstance(node, sllistnode):
             raise TypeError("node must be instance of sllistnode")
+        if not self.__first:
+            raise ValueError("List is empty")
         if isinstance(value, sllistnode):
             value = value.value
         new_node = sllistnode(value=value, next=None, owner=self)
@@ -168,6 +170,8 @@ class sllist(object):
     def insertbefore(self, node, value):
         if not isinstance(node, sllistnode):
             raise TypeError("node must be instance of sllistnode")
+        if not self.__first:
+            raise ValueError("List is empty")
         if isinstance(value, sllistnode):
             value = value.value
         new_node = sllistnode(value=value, next=None, owner=self)
