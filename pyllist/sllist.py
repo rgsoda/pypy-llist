@@ -272,3 +272,11 @@ class sllist(object):
             new_list += self
 
         return new_list
+
+    def __hash__(self):
+        h = 0
+
+        for value in self:
+            h ^= hash(value)
+
+        return h
