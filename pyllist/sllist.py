@@ -198,7 +198,7 @@ class sllist(object):
 
     def popleft(self):
         if not self.__first:
-            raise RuntimeError("List is empty")
+            raise ValueError("List is empty")
         del_node = self.__first
         self.__first = del_node.next
         if self.__last == del_node:
@@ -211,7 +211,7 @@ class sllist(object):
 
     def popright(self):
         if not self.__first:
-            raise RuntimeError("List is empty")
+            raise ValueError("List is empty")
         del_node = self.__last
         if self.__first == del_node:
             self.__last = None
@@ -227,9 +227,9 @@ class sllist(object):
         if not isinstance(node, sllistnode):
             raise TypeError("node must be a sllistnode")
         if self.__first is None:
-            raise RuntimeError("List is empty")
+            raise ValueError("List is empty")
         if node.owner is not self:
-            raise RuntimeError("Node is not element of this list")
+            raise ValueError("Node is not element of this list")
         prev = self.__get_prev(node)
         if not prev:
             self.popleft()
