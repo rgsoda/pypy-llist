@@ -137,7 +137,7 @@ class dllist(object):
     def appendright(self, x):
         node = dllistnode(x, self.__last, None, self)
 
-        if self.__first is self.__last:
+        if self.__first is None:
             self.__first = node
         self.__last = node
         self.__size += 1
@@ -297,3 +297,37 @@ class dllist(object):
             self.__last_access_node = node.prev
             self.__last_access_idx = index - 1
 
+    def __add__(self, sequence):
+        new_list = dllist(self)
+
+        for value in sequence:
+            new_list.append(value)
+
+        return new_list
+
+    def __iadd__(self, sequence):
+        if sequence is not self:
+            for value in sequence:
+                self.append(value)
+        else:
+            # slower path which avoids endless loop
+            # when extending list with itself
+            node = sequence.__first
+            last_node = self.__last
+            while node is not None:
+                self.append(node.value)
+                if node is last_node:
+                    break
+                node = node.next
+
+        return self
+
+    def __mul__(self, count):
+        if not isinstance(count, int):
+            raise TypeError('count must be an integer')
+
+        new_list = dllist()
+        for i in xrange(count):
+            new_list += self
+
+        return new_list
