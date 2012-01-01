@@ -17,7 +17,7 @@ Currently two types of lists are supported: a doubly linked :class:`dllist`
 and a singly linked :class:`sllist`.
 
 All data types defined in this module support efficient O(1) insertion
-and removal of elements (except removal in sllist).
+and removal of elements (except removal in :class:`sllist` which is O(n)).
 Random access to elements using index is O(n).
 
 
@@ -92,9 +92,9 @@ Random access to elements using index is O(n).
       Return node (of type :class:`dllistnode`) at *index*.
       Negative indices are allowed (to count nodes from the right).
 
-      Raises :exc:`TypeError` if index is not an integer.
+      Raises :exc:`TypeError` if *index* is not an integer.
 
-      Raises :exc:`IndexError` if index is out of range.
+      Raises :exc:`IndexError` if *index* is out of range.
 
       This method has O(n) complexity, but most recently accessed node is
       cached, so that accessing its neighbours is O(1).
@@ -105,14 +105,20 @@ Random access to elements using index is O(n).
 
       Remove and return an element's value from the right side of the list.
 
+      Raises :exc:`ValueError` if *self* is empty.
+
    .. method:: popleft()
 
       Remove and return an element's value from the left side of the list.
+
+      Raises :exc:`ValueError` if *self* is empty.
 
    .. method:: popright()
 
       Remove and return an element's value from the right side of the list
       (synonymous with :meth:`pop`).
+
+      Raises :exc:`ValueError` if *self* is empty.
 
    .. method:: remove(node)
 
@@ -383,9 +389,9 @@ Random access to elements using index is O(n).
       Return node (of type :class:`sllistnode`) at *index*.
       Negative indices are allowed (to count nodes from the right).
 
-      Raises :exc:`TypeError` if index is not an integer.
+      Raises :exc:`TypeError` if *index* is not an integer.
 
-      Raises :exc:`IndexError` if index is out of range.
+      Raises :exc:`IndexError` if *index* is out of range.
 
       This method has O(n) complexity.
 
@@ -393,17 +399,23 @@ Random access to elements using index is O(n).
 
       Remove and return an element's value from the right side of the list.
 
+      Raises :exc:`ValueError` if *self* is empty.
+
       This method has O(n) time complexity.
 
    .. method:: popleft()
 
       Remove and return an element's value from the left side of the list.
 
+      Raises :exc:`ValueError` if *self* is empty.
+
       This method has O(1) time complexity.
 
    .. method:: popright()
 
       Remove and return an element's value from the right side of the list.
+
+      Raises :exc:`ValueError` if *self* is empty.
 
       This method has O(n) time complexity.
 
@@ -427,7 +439,7 @@ Random access to elements using index is O(n).
    Negative indices are allowed (to count nodes from the right).
 
    Iteration over :class:`sllist` elements (using *for* or list
-   comprehensions) will directly yield values stored in nodes.
+   comprehensions) will also directly yield values stored in nodes.
 
    Like most containers, :class:`sllist` objects can be extended using
    ``lst1 + lst2`` and ``lst * num`` syntax (including in-place ``+=``
