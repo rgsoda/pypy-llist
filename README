@@ -1,4 +1,34 @@
-llist - linked lists for Python in Python
-=========================================
+pyllist - linked lists for Python
+=================================
 
+pyllist is a Python module providing basic linked list data structures.
+Collections implemented in the pyllist module perform well in problems
+which rely on fast insertions and/or deletions of elements in
+the middle of a sequence.
+For this kind of workload, they can be faster than collections.deque
+or standard Python lists.
 
+This extension requires Python 2.x. It should work with any
+implementation (tested with CPython and PyPy).
+Note however, that for CPython there is a much faster C extension
+module with the same API at http://github.com/ajakubek/python-llist/
+
+Currently pyllist provides the following types of linked lists:
+ - dllist - a doubly linked list
+ - sllist - a singly linked list
+
+Full documentation of these classes is available at:
+http://packages.python.org/pyllist/
+
+To install this package, either run "pip install pyllist",
+or download it manually from http://pypi.python.org/pypi
+then unpack the sources and compile them with "python setup.py install".
+
+The most current development version is available at:
+https://github.com/rgsoda/pypy-llist/
+
+Bugs can be reported at:
+https://github.com/rgsoda/pypy-llist/issues
+
+This software is distributed under the MIT license.
+Please see the LICENSE file included in the package for details.
