@@ -24,7 +24,7 @@ setup(name='pyllist',
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent'
+        'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
