@@ -3,12 +3,12 @@
 
 
 class sllistnode(object):
-    __slots__ = ('__next', '__value', '__owner')
+    __slots__ = ('__next', '__value', '__list')
 
-    def __init__(self, value=None, next=None, owner=None):
+    def __init__(self, value=None, next=None, list=None):
         self.__next = next
         self.__value = value
-        self.__owner = owner
+        self.__list = list
 
     @property
     def next(self):
@@ -19,8 +19,8 @@ class sllistnode(object):
         return self.__value
 
     @property
-    def owner(self):
-        return self.__owner
+    def list(self):
+        return self.__list
 
     def __call__(self):
         return self.__value
@@ -143,7 +143,7 @@ class sllist(object):
     def appendleft(self, value):
         if isinstance(value, sllistnode):
             value = value.value
-        new_node = sllistnode(value=value, next=self.__first, owner=self)
+        new_node = sllistnode(value=value, next=self.__first, list=self)
         self.__first = new_node
         self.__size += 1
         return new_node
@@ -159,11 +159,11 @@ class sllist(object):
             raise TypeError("node must be instance of sllistnode")
         if not self.__first:
             raise ValueError("List is empty")
-        if node.owner is not self:
+        if node.list is not self:
             raise ValueError("Node is not element of this list")
         if isinstance(value, sllistnode):
             value = value.value
-        new_node = sllistnode(value=value, next=None, owner=self)
+        new_node = sllistnode(value=value, next=None, list=self)
         new_node._sllistnode__next = node.next
         node._sllistnode__next = new_node
         self.__size += 1
@@ -174,11 +174,11 @@ class sllist(object):
             raise TypeError("node must be instance of sllistnode")
         if not self.__first:
             raise ValueError("List is empty")
-        if node.owner is not self:
+        if node.list is not self:
             raise ValueError("Node is not element of this list")
         if isinstance(value, sllistnode):
             value = value.value
-        new_node = sllistnode(value=value, next=None, owner=self)
+        new_node = sllistnode(value=value, next=None, list=self)
         prev = self.__get_prev(node)
         if prev:
             prev._sllistnode__next = new_node
@@ -195,7 +195,7 @@ class sllist(object):
     def appendright(self, value):
         if isinstance(value, sllistnode):
             value = value.value
-        new_node = sllistnode(value=value, next=None, owner=self)
+        new_node = sllistnode(value=value, next=None, list=self)
         if not self.__first:
             self.__first = new_node
         else:
@@ -236,7 +236,7 @@ class sllist(object):
             raise TypeError("node must be a sllistnode")
         if self.__first is None:
             raise ValueError("List is empty")
-        if node.owner is not self:
+        if node.list is not self:
             raise ValueError("Node is not element of this list")
         prev = self.__get_prev(node)
         if not prev:
