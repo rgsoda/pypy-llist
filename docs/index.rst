@@ -371,6 +371,8 @@ Random access to elements using index is O(n).
 
       Raises :exc:`TypeError` if *node* is not of type :class:`sllistnode`.
 
+      Raises :exc:`ValueError` if *node* does not belong to *self*.
+
       This method has O(1) complexity.
 
    .. method:: insert_before(x, node)
@@ -381,6 +383,8 @@ Random access to elements using index is O(n).
       node will be created and initialized with the value extracted from *x*.
 
       Raises :exc:`TypeError` if *node* is not of type :class:`sllistnode`.
+
+      Raises :exc:`ValueError` if *node* does not belong to *self*.
 
       This method has O(n) complexity.
 
