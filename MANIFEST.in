@@ -3,5 +3,5 @@ recursive-include docs *.py *.rst
 include docs/Makefile docs/make.bat
 graft docs/_static
 graft docs/_templates
-recursive-include examples *.py
+include examples/*.py
 recursive-include tests *test*.py
