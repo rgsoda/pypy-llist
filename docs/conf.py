@@ -42,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pyllist'
-copyright = u'2011, Rafał Gałczyński, Adam Jakubek'
+copyright = u'2011-2012, Rafał Gałczyński, Adam Jakubek'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
