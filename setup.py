@@ -9,7 +9,7 @@ modules=[ 'pyllist.dllist',
           'pyllist.sllist',
           ]
 
-setup(name='llist',
+setup(name='pyllist',
       description='Linked list data structures (in pure Python)',
       long_description=open('README').read(),
       author=u'Rafał Gałczyński <rafal.galczynski@gmail.com>, ' \
