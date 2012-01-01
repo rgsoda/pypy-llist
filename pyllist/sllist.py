@@ -159,6 +159,8 @@ class sllist(object):
             raise TypeError("node must be instance of sllistnode")
         if not self.__first:
             raise ValueError("List is empty")
+        if node.owner is not self:
+            raise ValueError("Node is not element of this list")
         if isinstance(value, sllistnode):
             value = value.value
         new_node = sllistnode(value=value, next=None, owner=self)
@@ -172,6 +174,8 @@ class sllist(object):
             raise TypeError("node must be instance of sllistnode")
         if not self.__first:
             raise ValueError("List is empty")
+        if node.owner is not self:
+            raise ValueError("Node is not element of this list")
         if isinstance(value, sllistnode):
             value = value.value
         new_node = sllistnode(value=value, next=None, owner=self)
