@@ -103,9 +103,10 @@ Random access to elements using index is O(n).
       Note that inserting/deleting a node in the middle of the list will
       invalidate this cache.
 
-   .. method:: iternodes()
+   .. method:: iternodes([to])
 
-      Iterate over the list staring from the first node.
+      Iterate over the list staring from the first node. If *to* is specified,
+      iteration stops when the current node becomes equal to argument *to*.
 
    .. method:: pop()
 
@@ -427,9 +428,11 @@ Random access to elements using index is O(n).
 
       This method has O(n) complexity.
 
-   .. method:: iternodes()
+   .. method:: iternodes([to])
 
-      Iterate over the list staring from the first node.
+      Iterate over the list staring from the first node. If *to* is specified,
+      iteration stops when the current node becomes equal to argument *to*.
+
 
    .. method:: pop()
 

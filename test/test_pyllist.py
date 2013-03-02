@@ -116,6 +116,19 @@ class testdllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
+    def test_iternodes_to(self):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        terminator_index = 200
+        terminator = ll.nodeat(terminator_index)
+        idx = 0
+        for node in ll.iternodes(to=terminator):
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(node.value, (terminator_index-1)*4)
+        self.assertEqual(idx, terminator_index)
+
     def test_iternext(self):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
@@ -580,6 +593,19 @@ class testsllist(unittest.TestCase):
             self.assertEqual(node.value, ref[idx])
             idx += 1
         self.assertEqual(idx, len(ref))
+
+    def test_iternodes_to(self):
+        ref = range(0, 1024, 4)
+        ll = sllist(ref)
+        terminator_index = 200
+        terminator = ll.nodeat(terminator_index)
+        idx = 0
+        for node in ll.iternodes(to=terminator):
+            self.assertTrue(isinstance(node, sllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(node.value, (terminator_index-1)*4)
+        self.assertEqual(idx, terminator_index)
 
     def test_iternext(self):
         ref = range(0, 1024, 4)

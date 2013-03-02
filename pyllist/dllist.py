@@ -256,9 +256,15 @@ class dllist(object):
 
         return node.value
 
-    def iternodes(self):
+    def iternodes(self, to=None):
+        if to is not None:
+            if not isinstance(to, dllistnode):
+                raise TypeError('to argument must be a dllistnode')
+            if to.list is not self:
+                raise ValueError('to argument belongs to another list')
+
         current = self.__first
-        while current is not None:
+        while current != to:
             yield current
             current = current.next
 
