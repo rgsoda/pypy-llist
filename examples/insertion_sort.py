@@ -19,8 +19,23 @@ def ins_sort_llist(data):
     return data
 
 
+#Linked-list implementation, demonstrates other types of iteration
+#and moves nodes instead of their values, which isn't really efficient
+def ins_sort_llist2(data):
+    for card in data.first.next.iternext():
+        for left_card in data.iternodes(to=card):
+            if left_card.value > card.value:
+                data.remove(card)
+                data.insert(card, before=left_card)
+                break
+    return data
+
+
 data = [6, 5, 32, 8, 234, 5, 1, 9, 0, 33]
 print ins_sort(data)
 
 data_llist = dllist([6, 5, 32, 8, 234, 5, 1, 9, 0, 33])
 print ins_sort_llist(data_llist)
+
+data_llist = dllist([6, 5, 32, 8, 234, 5, 1, 9, 0, 33])
+print ins_sort_llist2(data_llist)
