@@ -1,5 +1,7 @@
 * pyllist-0.1.1 (2013-03-02)
 
+  Value stored in nodes are mutable.
+
   Added new iteteration methods:
     - lst.nodes() to iterate over nodes istead of values;
     - node.iternext() and node.iterprev() to interate from a given node to the tail of head of the list.

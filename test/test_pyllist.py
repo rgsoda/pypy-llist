@@ -55,6 +55,13 @@ class testdllist(unittest.TestCase):
         c = dllist(['abc', None]).first
         self.assertEqual(repr(c), '<dllistnode(\'abc\')>')
 
+    def test_value_change(self):
+        a = dllist([1, 2, 3])
+        a.first.next.value = 5
+        self.assertEqual(a[0], 1)
+        self.assertEqual(a[1], 5)
+        self.assertEqual(a[2], 3)
+
     def test_cmp(self):
         a = dllist(xrange(0, 1100))
         b = dllist(xrange(0, 1101))
@@ -483,6 +490,13 @@ class testsllist(unittest.TestCase):
         self.assertEqual(repr(b), '<sllistnode(1)>')
         c = sllist(['abc', None]).first
         self.assertEqual(repr(c), '<sllistnode(\'abc\')>')
+
+    def test_value_change(self):
+        a = dllist([1, 2, 3])
+        a.first.next.value = 5
+        self.assertEqual(a[0], 1)
+        self.assertEqual(a[1], 5)
+        self.assertEqual(a[2], 3)
 
     def test_cmp(self):
         a = sllist(xrange(0, 1100))
