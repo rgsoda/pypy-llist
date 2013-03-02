@@ -156,15 +156,20 @@ class dllist(object):
     def append(self, x):
         return self.appendright(x)
 
-    def insert(self, x, before=None):
+    def insert(self, x, before=None, after=None):
+        if after is not None:
+            if before is not None:
+                raise ValueError('Only before or after argument can be defined')
+            before = after.next
+
         if before is None:
             return self.appendright(x)
 
         if not isinstance(before, dllistnode):
-            raise TypeError('before argument must be a dllistnode')
+            raise TypeError('before/after argument must be a dllistnode')
 
         if before.list is not self:
-            raise ValueError('before argument belongs to another list')
+            raise ValueError('before/after argument belongs to another list')
 
         node = dllistnode(x, before.prev, before, self)
 
@@ -251,7 +256,7 @@ class dllist(object):
 
         return node.value
 
-    def nodes(self):
+    def iternodes(self):
         current = self.__first
         while current is not None:
             yield current

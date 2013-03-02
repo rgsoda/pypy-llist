@@ -74,10 +74,11 @@ Random access to elements using index is O(n).
       Argument *x* might be a :class:`dllistnode`. In that case a new
       node will be created and initialized with the value extracted from *x*.
 
-   .. method:: insert(x, [before])
+   .. method:: insert(x, [before, after])
 
-      Add *x* to the right side of the list if *before* is not specified,
-      or insert *x* to the left side of :class:`dllistnode` *before*.
+      Add *x* to the right side of the list if *before* and *after* are not specified,
+      or if *before* specified, insert *x* to the left side of :class:`dllistnode` *before*,
+      otherwise, insert *x* to the right side of :class:`dllistnode` *after*.
       Return inserted :class:`dllistnode`.
 
       Argument *x* might be a :class:`dllistnode`. In that case a new
@@ -102,7 +103,7 @@ Random access to elements using index is O(n).
       Note that inserting/deleting a node in the middle of the list will
       invalidate this cache.
 
-   .. method:: nodes()
+   .. method:: iternodes()
 
       Iterate over the list staring from the first node.
 
@@ -217,7 +218,7 @@ Random access to elements using index is O(n).
       ...     print value * 2,
       2 4 6
 
-      >>> for node in lst.nodes():      # iterate over list nodes
+      >>> for node in lst.iternodes():  # iterate over list nodes
       ...     print node,
       dllistnode(1) dllistnode(2) dllistnode(3)
 
@@ -426,7 +427,7 @@ Random access to elements using index is O(n).
 
       This method has O(n) complexity.
 
-   .. method:: nodes()
+   .. method:: iternodes()
 
       Iterate over the list staring from the first node.
 
@@ -540,7 +541,7 @@ Random access to elements using index is O(n).
       ...     print value * 2,
       2 4 6
 
-      >>> for node in lst.nodes():      # iterate over list nodes
+      >>> for node in lst.iternodes():  # iterate over list nodes
       ...     print node,
       sllistnode(1) sllistnode(2) sllistnode(3)
 

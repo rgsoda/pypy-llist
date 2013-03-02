@@ -128,7 +128,7 @@ class sllist(object):
             yield current.value
             current = current.next
 
-    def nodes(self):
+    def iternodes(self):
         current = self.__first
         while current is not None:
             yield current
