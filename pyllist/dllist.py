@@ -258,6 +258,12 @@ class dllist(object):
 
         return node.value
 
+    def nodes(self):
+        current = self.__first
+        while current is not None:
+            yield current
+            current = current.next
+
     def __len__(self):
         return self.__size
 

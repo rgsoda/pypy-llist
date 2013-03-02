@@ -136,6 +136,12 @@ class sllist(object):
             yield current.value
             current = current.next
 
+    def nodes(self):
+        current = self.__first
+        while current is not None:
+            yield current
+            current = current.next
+
     def __get_prev(self, node):
         if not isinstance(node, sllistnode):
             raise TypeError("Object must be Node instance")

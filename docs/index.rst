@@ -11,6 +11,7 @@
 
 .. moduleauthor:: Rafał Gałczyński <rafal.galczynski@gmail.com>
 .. moduleauthor:: Adam Jakubek <ajakubek@gmail.com>
+.. moduleauthor:: Oleksandr Pryymak
 
 This module implements linked list data structures.
 Currently two types of lists are supported: a doubly linked :class:`dllist`
@@ -100,6 +101,10 @@ Random access to elements using index is O(n).
       cached, so that accessing its neighbours is O(1).
       Note that inserting/deleting a node in the middle of the list will
       invalidate this cache.
+
+   .. method:: nodes()
+
+      Iterate over the list staring from the first node.
 
    .. method:: pop()
 
@@ -212,6 +217,18 @@ Random access to elements using index is O(n).
       ...     print value * 2,
       2 4 6
 
+      >>> for node in lst.nodes():      # iterate over list nodes
+      ...     print node,
+      dllistnode(1) dllistnode(2) dllistnode(3)
+
+      >>> for node in lst.nodeat(1).iternext():        # iterate starting node with index 1
+      ...     print node,
+      dllistnode(2) dllistnode(3)
+
+      >>> for node in lst.nodeat(1).iterprev():        # iterate back starting node with index 2
+      ...     print node,
+      dllistnode(2) dllistnode(1)
+
       >>> lst.appendright(4)            # append value to the right side of the list
       <dllistnode(4)>
       >>> print lst
@@ -299,7 +316,17 @@ Random access to elements using index is O(n).
 
    .. attribute:: value
 
-      Value stored in this node.
+      Value stored in this node. Read-write attribute.
+
+   dllistnode objects also support the following methods:
+
+   .. method:: iternext()
+
+      Iterate to the tail of the list starting from the current node.
+
+   .. method:: iterprev()
+
+      Iterate to the head of the list starting from the current node.
 
    Note that value stored in the node can also be obtained through
    the :meth:`__call__()` method (using standard ``node()`` syntax).
@@ -398,6 +425,10 @@ Random access to elements using index is O(n).
       Raises :exc:`IndexError` if *index* is out of range.
 
       This method has O(n) complexity.
+
+   .. method:: nodes()
+
+      Iterate over the list staring from the first node.
 
    .. method:: pop()
 
@@ -509,6 +540,14 @@ Random access to elements using index is O(n).
       ...     print value * 2,
       2 4 6
 
+      >>> for node in lst.nodes():      # iterate over list nodes
+      ...     print node,
+      sllistnode(1) sllistnode(2) sllistnode(3)
+
+      >>> for node in lst.nodeat(1).iternext():        # iterate starting node with index 1
+      ...     print node,
+      sllistnode(2) sllistnode(3)
+
       >>> lst.appendright(4)            # append value to the right side of the list
       <sllistnode(4)>
       >>> print lst
@@ -592,7 +631,13 @@ Random access to elements using index is O(n).
 
    .. attribute:: value
 
-      Value stored in this node.
+      Value stored in this node. Read-write attribute.
+
+   sllistnode objects also support the following method:
+
+   .. method:: iternext()
+
+      Iterate to the tail of the list starting from the current node.
 
    Note that value stored in the node can also be obtained through
    the :meth:`__call__()` method (using standard ``node()`` syntax).
@@ -607,7 +652,7 @@ Changes
 Copyright
 =========
 
-This module is copyrighted by Adam Jakubek and Rafał Gałczyński.
+This module is copyrighted by Adam Jakubek, Rafał Gałczyński and Oleksandr Pryymak.
 
 It is distributed under the MIT license. Please see the LICENSE file
 included in this package for more details.

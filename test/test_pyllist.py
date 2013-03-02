@@ -99,10 +99,47 @@ class testdllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
+    def test_iter_nodes(self):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        idx = 0
+        for node in ll.nodes():
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(idx, len(ref))
+
+    def test_iternext(self):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        idx = 100
+        for node in ll.nodeat(100).iternext():
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(idx, len(ref))
+
+    def test_iterprev(self):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        idx = 100
+        for node in ll.nodeat(100).iterprev():
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx -= 1
+        self.assertEqual(idx, -1)
+
     def test_iter_empty(self):
         ll = dllist()
         count = 0
         for val in ll:
+            count += 1
+        self.assertEqual(count, 0)
+
+    def test_iter_empty_nodes(self):
+        ll = dllist()
+        count = 0
+        for val in ll.nodes():
             count += 1
         self.assertEqual(count, 0)
 
@@ -491,10 +528,37 @@ class testsllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
+    def test_iter_nodes(self):
+        ref = range(0, 1024, 4)
+        ll = sllist(ref)
+        idx = 0
+        for node in ll.nodes():
+            self.assertTrue(isinstance(node, sllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(idx, len(ref))
+
+    def test_iternext(self):
+        ref = range(0, 1024, 4)
+        ll = sllist(ref)
+        idx = 100
+        for node in ll.nodeat(100).iternext():
+            self.assertTrue(isinstance(node, sllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+        self.assertEqual(idx, len(ref))
+
     def test_iter_empty(self):
         ll = sllist()
         count = 0
         for val in ll:
+            count += 1
+        self.assertEqual(count, 0)
+
+    def test_iter_empty_nodes(self):
+        ll = sllist()
+        count = 0
+        for val in ll.nodes():
             count += 1
         self.assertEqual(count, 0)
 
