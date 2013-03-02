@@ -3,8 +3,9 @@
   Value stored in nodes are mutable.
 
   Added new iteteration methods:
-    - lst.nodes() to iterate over nodes istead of values;
-    - node.iternext() and node.iterprev() to interate from a given node to the tail of head of the list.
+    - lst.iternodes(to) to iterate over nodes istead of values;
+    - node.iternext(to) and node.iterprev(to) to interate from a given node to the tail or head
+    of the list (or a node specified in the argument 'to').
   An example of usage can be found in ./examples/insertion_sort.py
 
 
