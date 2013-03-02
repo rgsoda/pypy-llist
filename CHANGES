@@ -8,6 +8,8 @@
     of the list (or a node specified in the argument 'to').
   An example of usage can be found in ./examples/insertion_sort.py
 
+  lst.insert() has new attribute [after] in addition to the existing [before]
+
 
 * pyllist-0.1 (2012-01-01)
 
