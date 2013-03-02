@@ -14,7 +14,7 @@ class dllistnode(object):
         self.__list = list
 
         if prev is not None:
-            prev.__next = self 
+            prev.__next = self
         if next is not None:
             next.__prev = self
 
@@ -30,9 +30,25 @@ class dllistnode(object):
     def value(self):
         return self.__value
 
+    @value.setter
+    def value(self, value):
+        self.__value = value
+
     @property
     def list(self):
         return self.__list
+
+    def iternext(self):
+        current = self
+        while current is not None:
+            yield current
+            current = current.__next
+
+    def iterprev(self):
+        current = self
+        while current is not None:
+            yield current
+            current = current.__prev
 
     def __call__(self):
         return self.__value
@@ -185,7 +201,7 @@ class dllist(object):
 
         if self.__last_access_node is not node:
             if self.__last_access_idx >= 0:
-               self.__last_access_idx -= 1
+                self.__last_access_idx -= 1
         else:
             self.__last_access_node = None
             self.__last_access_idx = -1

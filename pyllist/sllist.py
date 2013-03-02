@@ -18,9 +18,19 @@ class sllistnode(object):
     def value(self):
         return self.__value
 
+    @value.setter
+    def value(self, value):
+        self.__value = value
+
     @property
     def list(self):
         return self.__list
+
+    def iternext(self):
+        current = self
+        while current is not None:
+            yield current
+            current = current.__next
 
     def __call__(self):
         return self.__value
