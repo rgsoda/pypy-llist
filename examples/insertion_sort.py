@@ -10,7 +10,7 @@ def ins_sort(array):
     return array
 
 
-#Linked-list implementation, which demonstrates iteration starting from a given node
+#Linked-list implementation, demonstrates iteration starting from a given node
 def ins_sort_llist(data):
     for card in data.first.next.iternext():  # Start iterating from the second!
         for left_card in card.iterprev():

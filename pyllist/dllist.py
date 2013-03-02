@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 class dllistnode(object):
-    __slots__ = ('__prev', '__next', '__value', '__list')
+    __slots__ = ('__prev', '__next', 'value', '__list')
 
     def __init__(self, value=None, prev=None, next=None, list=None):
         if isinstance(value, dllistnode):
@@ -10,7 +11,7 @@ class dllistnode(object):
 
         self.__prev = prev
         self.__next = next
-        self.__value = value
+        self.value = value
         self.__list = list
 
         if prev is not None:
@@ -25,14 +26,6 @@ class dllistnode(object):
     @property
     def next(self):
         return self.__next
-
-    @property
-    def value(self):
-        return self.__value
-
-    @value.setter
-    def value(self, value):
-        self.__value = value
 
     @property
     def list(self):
@@ -51,13 +44,13 @@ class dllistnode(object):
             current = current.__prev
 
     def __call__(self):
-        return self.__value
+        return self.value
 
     def __str__(self):
-        return 'dllistnode(' + str(self.__value) + ')'
+        return 'dllistnode(' + str(self.value) + ')'
 
     def __repr__(self):
-        return '<dllistnode(' + repr(self.__value) + ')>'
+        return '<dllistnode(' + repr(self.value) + ')>'
 
 
 class dllist(object):

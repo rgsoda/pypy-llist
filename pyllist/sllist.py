@@ -3,24 +3,16 @@
 
 
 class sllistnode(object):
-    __slots__ = ('__next', '__value', '__list')
+    __slots__ = ('__next', 'value', '__list')
 
     def __init__(self, value=None, next=None, list=None):
         self.__next = next
-        self.__value = value
+        self.value = value
         self.__list = list
 
     @property
     def next(self):
         return self.__next
-
-    @property
-    def value(self):
-        return self.__value
-
-    @value.setter
-    def value(self, value):
-        self.__value = value
 
     @property
     def list(self):
@@ -33,13 +25,13 @@ class sllistnode(object):
             current = current.__next
 
     def __call__(self):
-        return self.__value
+        return self.value
 
     def __str__(self):
-        return "sllistnode(%s)" % str(self.__value)
+        return "sllistnode(%s)" % str(self.value)
 
     def __repr__(self):
-        return "<sllistnode(%s)>" % repr(self.__value)
+        return "<sllistnode(%s)>" % repr(self.value)
 
 
 class sllist(object):
