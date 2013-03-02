@@ -322,13 +322,18 @@ Random access to elements using index is O(n).
 
    dllistnode objects also support the following methods:
 
-   .. method:: iternext()
+   .. method:: iternext([to])
 
       Iterate to the tail of the list starting from the current node.
+      If *to* is specified, iteration stops when the current node
+      becomes equal to argument *to*.
 
-   .. method:: iterprev()
+   .. method:: iterprev([to])
 
       Iterate to the head of the list starting from the current node.
+      If *to* is specified, iteration stops when the current node
+      becomes equal to argument *to*.
+
 
    Note that value stored in the node can also be obtained through
    the :meth:`__call__()` method (using standard ``node()`` syntax).
@@ -432,7 +437,6 @@ Random access to elements using index is O(n).
 
       Iterate over the list staring from the first node. If *to* is specified,
       iteration stops when the current node becomes equal to argument *to*.
-
 
    .. method:: pop()
 
@@ -639,9 +643,11 @@ Random access to elements using index is O(n).
 
    sllistnode objects also support the following method:
 
-   .. method:: iternext()
+   .. method:: iternext([to])
 
       Iterate to the tail of the list starting from the current node.
+      If *to* is specified, iteration stops when the current node
+      becomes equal to argument *to*.
 
    Note that value stored in the node can also be obtained through
    the :meth:`__call__()` method (using standard ``node()`` syntax).

@@ -31,17 +31,23 @@ class dllistnode(object):
     def list(self):
         return self.__list
 
-    def iternext(self):
-        current = self
-        while current is not None:
-            yield current
-            current = current.__next
+    def _iter(self, direction, to=None):
+        if to is not None:
+            if not isinstance(to, dllistnode):
+                raise TypeError('to argument must be a dllistnode')
+            if to.list is not self.__list:
+                raise ValueError('to argument belongs to another list')
 
-    def iterprev(self):
         current = self
-        while current is not None:
+        while current is not None and current != to:
             yield current
-            current = current.__prev
+            current = direction(current)
+
+    def iternext(self, to=None):
+        return self._iter(lambda x: x.__next, to=to)
+
+    def iterprev(self, to=None):
+        return self._iter(lambda x: x.__prev, to=to)
 
     def __call__(self):
         return self.value
@@ -257,16 +263,10 @@ class dllist(object):
         return node.value
 
     def iternodes(self, to=None):
-        if to is not None:
-            if not isinstance(to, dllistnode):
-                raise TypeError('to argument must be a dllistnode')
-            if to.list is not self:
-                raise ValueError('to argument belongs to another list')
-
-        current = self.__first
-        while current != to:
-            yield current
-            current = current.next
+        if self.__first is not None:
+            return self.__first.iternext(to=to)
+        else:
+            return iter([])
 
     def __len__(self):
         return self.__size

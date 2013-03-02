@@ -133,20 +133,54 @@ class testdllist(unittest.TestCase):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
         idx = 100
-        for node in ll.nodeat(100).iternext():
+        for node in ll.nodeat(idx).iternext():
             self.assertTrue(isinstance(node, dllistnode))
             self.assertEqual(node.value, ref[idx])
             idx += 1
         self.assertEqual(idx, len(ref))
 
+    def test_iternext_to(self, terminator_index=200):
+        ref = range(0, 1024, 4)
+        ll = dllist(ref)
+        if terminator_index is not None:
+            terminator = ll.nodeat(terminator_index)
+        else:
+            terminator = None
+
+        original_idx = idx = 100
+        for node in ll.nodeat(idx).iternext(to=terminator):
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+
+        if terminator_index == original_idx:
+            #self.assertRaises(UnboundLocalError, node)
+            self.assertEqual(idx, terminator_index)
+        elif terminator_index < original_idx:
+            self.assertEqual(node.value, 1020)
+            self.assertEqual(idx, 256)
+        else:
+            self.assertEqual(node.value, (terminator_index-1)*4)
+            self.assertEqual(idx, terminator_index)
+
+    def test_iternext_to_preceding_idx(self):
+        self.test_iternext_to(terminator_index=50)
+
+    def test_iternext_to_equal_idx(self):
+        self.test_iternext_to(terminator_index=100)
+
+    def test_iternext_to_None(self):
+        self.test_iternext_to(terminator_index=None)
+
     def test_iterprev(self):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
         idx = 100
-        for node in ll.nodeat(100).iterprev():
+        for node in ll.nodeat(idx).iterprev():
             self.assertTrue(isinstance(node, dllistnode))
             self.assertEqual(node.value, ref[idx])
             idx -= 1
+        self.assertEqual(node.value, 0)
         self.assertEqual(idx, -1)
 
     def test_iter_empty(self):
@@ -594,18 +628,30 @@ class testsllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
-    def test_iternodes_to(self):
+    def test_iternext_to(self, terminator_index=200):
         ref = range(0, 1024, 4)
         ll = sllist(ref)
-        terminator_index = 200
         terminator = ll.nodeat(terminator_index)
-        idx = 0
-        for node in ll.iternodes(to=terminator):
+        original_idx = idx = 100
+        for node in ll.nodeat(idx).iternext(to=terminator):
             self.assertTrue(isinstance(node, sllistnode))
             self.assertEqual(node.value, ref[idx])
             idx += 1
-        self.assertEqual(node.value, (terminator_index-1)*4)
-        self.assertEqual(idx, terminator_index)
+        if terminator_index == original_idx:
+            #self.assertRaises(UnboundLocalError, node)
+            self.assertEqual(idx, terminator_index)
+        elif terminator_index < original_idx:
+            self.assertEqual(node.value, 1020)
+            self.assertEqual(idx, 256)
+        else:
+            self.assertEqual(node.value, (terminator_index-1)*4)
+            self.assertEqual(idx, terminator_index)
+
+    def test_iternext_to_preceding_idx(self):
+        self.test_iternext_to(terminator_index=50)
+
+    def test_iternext_to_equal_idx(self):
+        self.test_iternext_to(terminator_index=100)
 
     def test_iternext(self):
         ref = range(0, 1024, 4)

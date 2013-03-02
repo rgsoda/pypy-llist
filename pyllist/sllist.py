@@ -18,9 +18,15 @@ class sllistnode(object):
     def list(self):
         return self.__list
 
-    def iternext(self):
+    def iternext(self, to=None):
+        if to is not None:
+            if not isinstance(to, sllistnode):
+                raise TypeError('to argument must be a sllistnode')
+            if to.list is not self.__list:
+                raise ValueError('to argument belongs to another list')
+
         current = self
-        while current is not None:
+        while current is not None and current != to:
             yield current
             current = current.__next
 
@@ -129,16 +135,10 @@ class sllist(object):
             current = current.next
 
     def iternodes(self, to=None):
-        if to is not None:
-            if not isinstance(to, sllistnode):
-                raise TypeError('to argument must be a sllistnode')
-            if to.list is not self:
-                raise ValueError('to argument belongs to another list')
-
-        current = self.__first
-        while current != to:
-            yield current
-            current = current.next
+        if self.__first is not None:
+            return self.__first.iternext(to=to)
+        else:
+            return iter([])
 
     def __get_prev(self, node):
         if not isinstance(node, sllistnode):
