@@ -105,7 +105,7 @@ Random access to elements using index is O(n).
 
    .. method:: iternodes([to])
 
-      Iterate over the list staring from the first node. If *to* is specified,
+      Iterate over the list starting from the first node. If *to* is specified,
       iteration stops when the current node becomes equal to argument *to*.
 
    .. method:: pop()
@@ -435,7 +435,7 @@ Random access to elements using index is O(n).
 
    .. method:: iternodes([to])
 
-      Iterate over the list staring from the first node. If *to* is specified,
+      Iterate over the list starting from the first node. If *to* is specified,
       iteration stops when the current node becomes equal to argument *to*.
 
    .. method:: pop()
