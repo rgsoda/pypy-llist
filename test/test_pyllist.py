@@ -568,7 +568,7 @@ class testsllist(unittest.TestCase):
         self.assertEqual(repr(c), '<sllistnode(\'abc\')>')
 
     def test_value_change(self):
-        a = dllist([1, 2, 3])
+        a = sllist([1, 2, 3])
         a.first.next.value = 5
         self.assertEqual(a[0], 1)
         self.assertEqual(a[1], 5)
