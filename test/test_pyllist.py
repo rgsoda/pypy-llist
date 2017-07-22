@@ -15,6 +15,8 @@ class testdllist(unittest.TestCase):
         self.assertEqual(len(ll), 0)
         self.assertEqual(ll.size, 0)
         self.assertEqual(list(ll), [])
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_init_with_sequence(self):
         ref = range(0, 1024, 4)
@@ -22,6 +24,10 @@ class testdllist(unittest.TestCase):
         self.assertEqual(len(ll), len(ref))
         self.assertEqual(ll.size, len(ref))
         self.assertEqual(list(ll), ref)
+        self.assertIsNot(ll.first, None)
+        self.assertEqual(ll.first.value, 0)
+        self.assertIsNot(ll.last, None)
+        self.assertEqual(ll.last.value, 1020)
 
     def test_init_with_non_sequence(self):
         self.assertRaises(TypeError, dllist, 1)
@@ -228,6 +234,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(new_node, ll.last)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_insert(self):
+        ll = dllist()
+        node1 = ll.insert(dllistnode(1))
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.insert(dllistnode(2))
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_insert_value_before(self):
         ll = dllist(xrange(4))
         ref = dllist([0, 1, 10, 2, 3])
@@ -307,6 +322,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(ll.last, new_node)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_append(self):
+        ll = dllist()
+        node1 = ll.append(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.append(2)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_appendleft(self):
         ll = dllist(xrange(4))
         ref = dllist([10, 0, 1, 2, 3])
@@ -320,6 +344,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(next.prev, new_node)
         self.assertEqual(ll.first, new_node)
         self.assertEqual(ll, ref)
+
+    def test_guards_after_appendleft(self):
+        ll = dllist()
+        node1 = ll.appendleft(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.appendleft(2)
+        self.assertIs(ll.first, node2)
+        self.assertIs(ll.last, node1)
 
     def test_appendright(self):
         ll = dllist(xrange(4))
@@ -335,6 +368,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(ll.last, new_node)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_appendright(self):
+        ll = dllist()
+        node1 = ll.appendright(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.appendright(2)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_pop(self):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
@@ -344,6 +386,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(ll.size, len(ref) - 1)
         self.assertEqual(ll.last.value, ref[-2])
         self.assertEqual(list(ll), ref[:-1])
+
+    def test_guards_after_pop(self):
+        ll = dllist([1, 2])
+        ll.pop()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 1)
+        ll.pop()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_popleft(self):
         ref = range(0, 1024, 4)
@@ -355,6 +406,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(ll.first.value, ref[1])
         self.assertEqual(list(ll), ref[1:])
 
+    def test_guards_after_popleft(self):
+        ll = dllist([1, 2])
+        ll.popleft()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 2)
+        ll.popleft()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
+
     def test_popright(self):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
@@ -364,6 +424,15 @@ class testdllist(unittest.TestCase):
         self.assertEqual(ll.size, len(ref) - 1)
         self.assertEqual(ll.last.value, ref[-2])
         self.assertEqual(list(ll), ref[:-1])
+
+    def test_guards_after_popright(self):
+        ll = dllist([1, 2])
+        ll.pop()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 1)
+        ll.pop()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_pop_from_empty_list(self):
         ll = dllist()
@@ -378,6 +447,14 @@ class testdllist(unittest.TestCase):
     def test_remove_invalid_node(self):
         ll = dllist([1, 2, 3, 4])
         self.assertRaises(ValueError, ll.remove, dllistnode())
+
+    def test_guards_after_remove(self):
+        ll = dllist([1, 2])
+        ll.remove(ll.last)
+        self.assertIs(ll.first, ll.last)
+        ll.remove(ll.first)
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_getitem(self):
         ref = range(0, 1024, 4)
@@ -421,6 +498,16 @@ class testdllist(unittest.TestCase):
             del ll[0]
         self.assertEqual(len(ll), 0)
 
+    def test_guards_after_del(self):
+        ll = dllist([1, 2])
+        orig_last = ll.last
+        del ll[0]
+        self.assertIs(ll.first, orig_last)
+        self.assertIs(ll.last, orig_last)
+        del ll[0]
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
+
     def test_concat(self):
         a_ref = range(0, 1024, 4)
         a = dllist(a_ref)
@@ -433,6 +520,15 @@ class testdllist(unittest.TestCase):
         c = a + b_ref
         self.assertEqual(c, ab_ref)
         self.assertEqual(len(c), len(ab_ref))
+
+    def test_guards_after_concat(self):
+        a = dllist([1, 2])
+        b = dllist([3, 4])
+        c = a + b
+        self.assertIsNot(c.first, None)
+        self.assertEqual(c.first.value, 1)
+        self.assertIsNot(c.last, None)
+        self.assertEqual(c.last.value, 4)
 
     def test_concat_empty(self):
         empty = dllist()
@@ -466,6 +562,27 @@ class testdllist(unittest.TestCase):
         self.assertEqual(a, dllist(a_ref + a_ref))
         self.assertEqual(len(a), len(ab_ref))
 
+    def test_guards_after_concat_inplace(self):
+        a = dllist([1, 2])
+        b = dllist([3, 4])
+        orig_a_first = a.first
+        a += b
+        self.assertIs(a.first, orig_a_first)
+        self.assertEqual(a.first.value, 1)
+        self.assertIsNot(a.last, None)
+        self.assertEqual(a.last.value, 4)
+
+    def test_guards_after_concat_inplace_of_self(self):
+        ll = dllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll += ll
+        self.assertIs(ll.first, orig_first)
+        self.assertEqual(ll.first.value, 1)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
+        self.assertEqual(ll.last.value, 2)
+
     def test_concat_inplace_empty(self):
         filled_ref = range(0, 1024, 4)
         filled = dllist(filled_ref)
@@ -487,6 +604,16 @@ class testdllist(unittest.TestCase):
         ll = dllist(ref)
         self.assertEqual(ll * 4, dllist(ref * 4))
 
+    def test_guards_after_repeat(self):
+        ll = dllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll = ll * 4
+        self.assertIsNot(ll.first, None)
+        self.assertIsNot(ll.first, orig_first)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
+
     def test_repeat_empty(self):
         ll = dllist()
         self.assertEqual(ll * 4, dllist([] * 4))
@@ -496,6 +623,15 @@ class testdllist(unittest.TestCase):
         ll = dllist(ref)
         ll *= 4
         self.assertEqual(ll, dllist(ref * 4))
+
+    def test_guards_after_repeat_inplace(self):
+        ll = dllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll *= 4
+        self.assertIs(ll.first, orig_first)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
 
     def test_repeat_inplace_empty(self):
         ll = dllist()
@@ -527,6 +663,8 @@ class testsllist(unittest.TestCase):
         self.assertEqual(len(ll), 0)
         self.assertEqual(ll.size, 0)
         self.assertEqual(list(ll), [])
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_init_with_sequence(self):
         ref = range(0, 1024, 4)
@@ -534,6 +672,10 @@ class testsllist(unittest.TestCase):
         self.assertEqual(len(ll), len(ref))
         self.assertEqual(ll.size, len(ref))
         self.assertEqual(list(ll), ref)
+        self.assertIsNot(ll.first, None)
+        self.assertEqual(ll.first.value, 0)
+        self.assertIsNot(ll.last, None)
+        self.assertEqual(ll.last.value, 1020)
 
     def test_init_with_non_sequence(self):
         self.assertRaises(TypeError, sllist, 1)
@@ -732,12 +874,35 @@ class testsllist(unittest.TestCase):
         self.assertEqual(new_node, ll.first)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_insert(self):
+        ll = sllist()
+        node1 = ll.insert(sllistnode(1))
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.insert(sllistnode(2))
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_insert_invalid_ref(self):
         ll = sllist()
         self.assertRaises(TypeError, ll.insert, 10, 1)
         self.assertRaises(TypeError, ll.insert, 10, 'abc')
         self.assertRaises(TypeError, ll.insert, 10, [])
         self.assertRaises(ValueError, ll.insert, 10, sllistnode())
+
+    def test_guards_after_insertafter(self):
+        ll = sllist([1])
+        orig_first = ll.first
+        node = ll.insertafter(ll.last, sllistnode(2))
+        self.assertIs(ll.first, orig_first)
+        self.assertIs(ll.last, node)
+
+    def test_guards_after_insertbefore(self):
+        ll = sllist([1])
+        orig_last = ll.last
+        node = ll.insertbefore(ll.first, sllistnode(2))
+        self.assertIs(ll.first, node)
+        self.assertIs(ll.last, orig_last)
 
     def test_append(self):
         ll = sllist(xrange(4))
@@ -752,6 +917,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(ll.last, new_node)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_append(self):
+        ll = sllist()
+        node1 = ll.append(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.append(2)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_appendleft(self):
         ll = sllist(xrange(4))
         ref = sllist([10, 0, 1, 2, 3])
@@ -763,6 +937,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(new_node.next, next)
         self.assertEqual(ll.first, new_node)
         self.assertEqual(ll, ref)
+
+    def test_guards_after_appendleft(self):
+        ll = sllist()
+        node1 = ll.appendleft(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.appendleft(2)
+        self.assertIs(ll.first, node2)
+        self.assertIs(ll.last, node1)
 
     def test_appendright(self):
         ll = sllist(xrange(4))
@@ -777,6 +960,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(ll.last, new_node)
         self.assertEqual(ll, ref)
 
+    def test_guards_after_appendright(self):
+        ll = sllist()
+        node1 = ll.appendright(1)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node1)
+        node2 = ll.appendright(2)
+        self.assertIs(ll.first, node1)
+        self.assertIs(ll.last, node2)
+
     def test_pop(self):
         ref = range(0, 1024, 4)
         ll = sllist(ref)
@@ -786,6 +978,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(ll.size, len(ref) - 1)
         self.assertEqual(ll.last.value, ref[-2])
         self.assertEqual(list(ll), ref[:-1])
+
+    def test_guards_after_pop(self):
+        ll = sllist([1, 2])
+        ll.pop()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 1)
+        ll.pop()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_popleft(self):
         ref = range(0, 1024, 4)
@@ -797,6 +998,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(ll.first.value, ref[1])
         self.assertEqual(list(ll), ref[1:])
 
+    def test_guards_after_popleft(self):
+        ll = sllist([1, 2])
+        ll.popleft()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 2)
+        ll.popleft()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
+
     def test_popright(self):
         ref = range(0, 1024, 4)
         ll = sllist(ref)
@@ -806,6 +1016,15 @@ class testsllist(unittest.TestCase):
         self.assertEqual(ll.size, len(ref) - 1)
         self.assertEqual(ll.last.value, ref[-2])
         self.assertEqual(list(ll), ref[:-1])
+
+    def test_guards_after_popright(self):
+        ll = sllist([1, 2])
+        ll.pop()
+        self.assertIs(ll.first, ll.last)
+        self.assertEqual(ll.first.value, 1)
+        ll.pop()
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_pop_from_empty_list(self):
         ll = sllist()
@@ -820,6 +1039,14 @@ class testsllist(unittest.TestCase):
     def test_remove_invalid_node(self):
         ll = sllist([1, 2, 3, 4])
         self.assertRaises(ValueError, ll.remove, sllistnode())
+
+    def test_guards_after_remove(self):
+        ll = sllist([1, 2])
+        ll.remove(ll.last)
+        self.assertIs(ll.first, ll.last)
+        ll.remove(ll.first)
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
 
     def test_getitem(self):
         ref = range(0, 1024, 4)
@@ -863,6 +1090,16 @@ class testsllist(unittest.TestCase):
             del ll[0]
         self.assertEqual(len(ll), 0)
 
+    def test_guards_after_del(self):
+        ll = sllist([1, 2])
+        orig_last = ll.last
+        del ll[0]
+        self.assertIs(ll.first, orig_last)
+        self.assertIs(ll.last, orig_last)
+        del ll[0]
+        self.assertIs(ll.first, None)
+        self.assertIs(ll.last, None)
+
     def test_concat(self):
         a_ref = range(0, 1024, 4)
         a = sllist(a_ref)
@@ -875,6 +1112,15 @@ class testsllist(unittest.TestCase):
         c = a + b_ref
         self.assertEqual(c, ab_ref)
         self.assertEqual(len(c), len(ab_ref))
+
+    def test_guards_after_concat(self):
+        a = sllist([1, 2])
+        b = sllist([3, 4])
+        c = a + b
+        self.assertIsNot(c.first, None)
+        self.assertEqual(c.first.value, 1)
+        self.assertIsNot(c.last, None)
+        self.assertEqual(c.last.value, 4)
 
     def test_concat_empty(self):
         empty = sllist()
@@ -908,6 +1154,27 @@ class testsllist(unittest.TestCase):
         self.assertEqual(a, sllist(a_ref + a_ref))
         self.assertEqual(len(a), len(ab_ref))
 
+    def test_guards_after_concat_inplace(self):
+        a = sllist([1, 2])
+        b = sllist([3, 4])
+        orig_a_first = a.first
+        a += b
+        self.assertIs(a.first, orig_a_first)
+        self.assertEqual(a.first.value, 1)
+        self.assertIsNot(a.last, None)
+        self.assertEqual(a.last.value, 4)
+
+    def test_guards_after_concat_inplace_of_self(self):
+        ll = sllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll += ll
+        self.assertIs(ll.first, orig_first)
+        self.assertEqual(ll.first.value, 1)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
+        self.assertEqual(ll.last.value, 2)
+
     def test_concat_inplace_empty(self):
         filled_ref = range(0, 1024, 4)
         filled = sllist(filled_ref)
@@ -929,6 +1196,16 @@ class testsllist(unittest.TestCase):
         ll = sllist(ref)
         self.assertEqual(ll * 4, sllist(ref * 4))
 
+    def test_guards_after_repeat(self):
+        ll = sllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll = ll * 4
+        self.assertIsNot(ll.first, None)
+        self.assertIsNot(ll.first, orig_first)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
+
     def test_repeat_empty(self):
         ll = sllist()
         self.assertEqual(ll * 4, sllist([] * 4))
@@ -938,6 +1215,15 @@ class testsllist(unittest.TestCase):
         ll = sllist(ref)
         ll *= 4
         self.assertEqual(ll, sllist(ref * 4))
+
+    def test_guards_after_repeat_inplace(self):
+        ll = sllist([1, 2])
+        orig_first = ll.first
+        orig_last = ll.last
+        ll *= 4
+        self.assertIs(ll.first, orig_first)
+        self.assertIsNot(ll.last, None)
+        self.assertIsNot(ll.last, orig_last)
 
     def test_repeat_inplace_empty(self):
         ll = sllist()

@@ -159,6 +159,8 @@ class sllist(object):
             value = value.value
         new_node = sllistnode(value=value, next=self.__first, list=self)
         self.__first = new_node
+        if self.__last is None:
+            self.__last = new_node
         self.__size += 1
         return new_node
 
@@ -180,6 +182,8 @@ class sllist(object):
         new_node = sllistnode(value=value, next=None, list=self)
         new_node._sllistnode__next = node.next
         node._sllistnode__next = new_node
+        if self.__last is node:
+            self.__last = new_node
         self.__size += 1
         return new_node
 
@@ -257,6 +261,8 @@ class sllist(object):
             self.popleft()
         else:
             prev._sllistnode__next = node.next
+            if self.__last == node:
+                self.__last = prev
             self.__size -= 1
         return node.value
 
@@ -264,21 +270,21 @@ class sllist(object):
         new_list = sllist(self)
 
         for value in sequence:
-            new_list.append(value)
+            new_list.appendright(value)
 
         return new_list
 
     def __iadd__(self, sequence):
         if sequence is not self:
             for value in sequence:
-                self.append(value)
+                self.appendright(value)
         else:
             # slower path which avoids endless loop
             # when extending list with itself
             node = sequence.__first
             last_node = self.__last
             while node is not None:
-                self.append(node.value)
+                self.appendright(node.value)
                 if node is last_node:
                     break
                 node = node.next
@@ -294,6 +300,21 @@ class sllist(object):
             new_list += self
 
         return new_list
+
+    def __imul__(self, count):
+        if not isinstance(count, int):
+            raise TypeError('count must be an integer')
+
+        last_node = self.__last
+        for i in xrange(count - 1):
+            node = self.__first
+            while node is not None:
+                self.appendright(node.value)
+                if node is last_node:
+                    break
+                node = node.next
+
+        return self
 
     def __hash__(self):
         h = 0

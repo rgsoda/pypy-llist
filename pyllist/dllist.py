@@ -140,7 +140,7 @@ class dllist(object):
     def appendleft(self, x):
         node = dllistnode(x, None, self.__first, self)
 
-        if self.__first is self.__last:
+        if self.__last is None:
             self.__last = node
         self.__first = node
         self.__size += 1
@@ -357,6 +357,21 @@ class dllist(object):
             new_list += self
 
         return new_list
+
+    def __imul__(self, count):
+        if not isinstance(count, int):
+            raise TypeError('count must be an integer')
+
+        last_node = self.__last
+        for i in xrange(count - 1):
+            node = self.__first
+            while node is not None:
+                self.appendright(node.value)
+                if node is last_node:
+                    break
+                node = node.next
+
+        return self
 
     def __hash__(self):
         h = 0

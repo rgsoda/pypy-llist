@@ -1,3 +1,9 @@
+* pyllist-0.2 (unreleased)
+
+  - fixed updating of 'first' and 'last' list property (closes issue #3)
+
+-----------------------------------------------------------------------
+
 * pyllist-0.1.1 (2013-03-02)
 
   Values stored in nodes are mutable.
@@ -10,6 +16,7 @@
 
   lst.insert() has new attribute [after] in addition to the existing [before]
 
+-----------------------------------------------------------------------
 
 * pyllist-0.1 (2012-01-01)
 
