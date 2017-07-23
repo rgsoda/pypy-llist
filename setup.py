@@ -11,7 +11,7 @@ modules = ['pyllist.dllist',
 
 setup(name='pyllist',
       description='Linked list data structures (in pure Python)',
-      long_description=open('README').read(),
+      long_description=open('README.md').read(),
       author=u'Rafał Gałczyński <rafal.galczynski@gmail.com>, '
              u'Adam Jakubek <ajakubek@gmail.com>, '
              u'Oleksandr Pryymak',
