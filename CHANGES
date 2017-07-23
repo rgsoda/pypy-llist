@@ -1,4 +1,4 @@
-* pyllist-0.2 (unreleased)
+* pyllist-0.2 (2017-07-23)
 
   - fixed updating of 'first' and 'last' list property (closes issue #3)
 
@@ -10,8 +10,9 @@
 
   Added new iteration methods:
     - lst.iternodes(to) to iterate over nodes instead of values;
-    - node.iternext(to) and node.iterprev(to) to iterate from a given node to the tail or head
-    of the list (or a node specified in the argument 'to').
+    - node.iternext(to) and node.iterprev(to) to iterate from a given node to
+      the tail or head of the list (or a node specified in the argument 'to').
+
   An example of usage can be found in ./examples/insertion_sort.py
 
   lst.insert() has new attribute [after] in addition to the existing [before]
