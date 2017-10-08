@@ -71,12 +71,12 @@ class testdllist(unittest.TestCase):
     def test_cmp(self):
         a = dllist(xrange(0, 1100))
         b = dllist(xrange(0, 1101))
-        c = [xrange(0, 1100)]
+        c = range(0, 1100)
         self.assertEqual(cmp(a, a), 0)
         self.assertEqual(cmp(a, b), -1)
         self.assertEqual(cmp(b, a), 1)
-        self.assertEqual(cmp(a, c), 1)
-        self.assertEqual(cmp(c, a), -1)
+        self.assertEqual(cmp(a, c), 0)
+        self.assertEqual(cmp(c, a), 0)
         self.assertEqual(cmp([], []), 0)
         self.assertEqual(cmp([], a), -1)
         self.assertEqual(cmp(a, []), 1)
@@ -135,59 +135,75 @@ class testdllist(unittest.TestCase):
         self.assertEqual(node.value, (terminator_index-1)*4)
         self.assertEqual(idx, terminator_index)
 
-    def test_iternext(self):
+    def test_iternext_to_following_idx(self):
         ref = range(0, 1024, 4)
-        ll = dllist(ref)
-        idx = 100
-        for node in ll.nodeat(idx).iternext():
-            self.assertTrue(isinstance(node, dllistnode))
-            self.assertEqual(node.value, ref[idx])
-            idx += 1
-        self.assertEqual(idx, len(ref))
-
-    def test_iternext_to(self, terminator_index=200):
-        ref = range(0, 1024, 4)
-        ll = dllist(ref)
-        if terminator_index is not None:
-            terminator = ll.nodeat(terminator_index)
-        else:
-            terminator = None
-
-        original_idx = idx = 100
-        for node in ll.nodeat(idx).iternext(to=terminator):
-            self.assertTrue(isinstance(node, dllistnode))
-            self.assertEqual(node.value, ref[idx])
-            idx += 1
-
-        if terminator_index == original_idx:
-            #self.assertRaises(UnboundLocalError, node)
-            self.assertEqual(idx, terminator_index)
-        elif terminator_index < original_idx:
-            self.assertEqual(node.value, 1020)
-            self.assertEqual(idx, 256)
-        else:
-            self.assertEqual(node.value, (terminator_index-1)*4)
-            self.assertEqual(idx, terminator_index)
+        self._test_iternext(ref, 100, 200, ref[199])
 
     def test_iternext_to_preceding_idx(self):
-        self.test_iternext_to(terminator_index=50)
+        ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, 50, ref[-1])
 
     def test_iternext_to_equal_idx(self):
-        self.test_iternext_to(terminator_index=100)
+        ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, 100, None)
 
     def test_iternext_to_None(self):
-        self.test_iternext_to(terminator_index=None)
-
-    def test_iterprev(self):
         ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, None, ref[-1])
+
+    def _test_iternext(self, ref, start_idx, target_idx, expected_last_value):
         ll = dllist(ref)
-        idx = 100
-        for node in ll.nodeat(idx).iterprev():
+
+        idx = start_idx
+        target = ll.nodeat(target_idx) if target_idx is not None else None
+        last_node = None
+
+        for node in ll.nodeat(start_idx).iternext(to=target):
+            self.assertTrue(isinstance(node, dllistnode))
+            self.assertEqual(node.value, ref[idx])
+            idx += 1
+            last_node = node
+
+        if expected_last_value is not None:
+            self.assertEqual(last_node.value, expected_last_value)
+        else:
+            self.assertIsNone(last_node)
+
+    def test_iterprev_to_preceding_idx(self):
+        ref = range(0, 1024, 4)
+        self._test_iterprev(ref, 100, 50, ref[51])
+
+    def test_iterprev_to_following_idx(self):
+        ref = range(0, 1024, 4)
+        self._test_iterprev(ref, 100, 200, ref[0])
+
+    def test_iterprev_to_equal_idx(self):
+        ref = range(0, 1024, 4)
+        self._test_iterprev(ref, 100, 100, None)
+
+    def test_iterprev_to_None(self):
+        ref = range(0, 1024, 4)
+        self._test_iterprev(ref, 100, None, ref[0])
+
+    def _test_iterprev(self, ref, start_idx, target_idx, expected_last_value):
+        ll = dllist(ref)
+
+        idx = start_idx
+        target = ll.nodeat(target_idx) if target_idx is not None else None
+        last_node = None
+
+        start_node = ll.nodeat(start_idx)
+
+        for node in ll.nodeat(start_idx).iterprev(to=target):
             self.assertTrue(isinstance(node, dllistnode))
             self.assertEqual(node.value, ref[idx])
             idx -= 1
-        self.assertEqual(node.value, 0)
-        self.assertEqual(idx, -1)
+            last_node = node
+
+        if expected_last_value is not None:
+            self.assertEqual(last_node.value, expected_last_value)
+        else:
+            self.assertIsNone(last_node)
 
     def test_iter_empty(self):
         ll = dllist()
@@ -486,8 +502,8 @@ class testdllist(unittest.TestCase):
         del ll[len(ll) - 1]
         del ref[len(ref) - 1]
         self.assertEqual(list(ll), ref)
-        del ll[(len(ll) - 1) / 2]
-        del ref[(len(ref) - 1) / 2]
+        del ll[(len(ll) - 1) // 2]
+        del ref[(len(ref) - 1) // 2]
         self.assertEqual(list(ll), ref)
 
         def del_item(idx):
@@ -719,12 +735,12 @@ class testsllist(unittest.TestCase):
     def test_cmp(self):
         a = sllist(xrange(0, 1100))
         b = sllist(xrange(0, 1101))
-        c = [xrange(0, 1100)]
+        c = range(0, 1100)
         self.assertEqual(cmp(a, a), 0)
         self.assertEqual(cmp(a, b), -1)
         self.assertEqual(cmp(b, a), 1)
-        self.assertEqual(cmp(a, c), 1)
-        self.assertEqual(cmp(c, a), -1)
+        self.assertEqual(cmp(a, c), 0)
+        self.assertEqual(cmp(c, a), 0)
         self.assertEqual(cmp([], []), 0)
         self.assertEqual(cmp([], a), -1)
         self.assertEqual(cmp(a, []), 1)
@@ -770,40 +786,39 @@ class testsllist(unittest.TestCase):
             idx += 1
         self.assertEqual(idx, len(ref))
 
-    def test_iternext_to(self, terminator_index=200):
+    def test_iternext_to_following_idx(self):
         ref = range(0, 1024, 4)
-        ll = sllist(ref)
-        terminator = ll.nodeat(terminator_index)
-        original_idx = idx = 100
-        for node in ll.nodeat(idx).iternext(to=terminator):
-            self.assertTrue(isinstance(node, sllistnode))
-            self.assertEqual(node.value, ref[idx])
-            idx += 1
-        if terminator_index == original_idx:
-            #self.assertRaises(UnboundLocalError, node)
-            self.assertEqual(idx, terminator_index)
-        elif terminator_index < original_idx:
-            self.assertEqual(node.value, 1020)
-            self.assertEqual(idx, 256)
-        else:
-            self.assertEqual(node.value, (terminator_index-1)*4)
-            self.assertEqual(idx, terminator_index)
+        self._test_iternext(ref, 100, 200, ref[199])
 
     def test_iternext_to_preceding_idx(self):
-        self.test_iternext_to(terminator_index=50)
+        ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, 50, ref[-1])
 
     def test_iternext_to_equal_idx(self):
-        self.test_iternext_to(terminator_index=100)
-
-    def test_iternext(self):
         ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, 100, None)
+
+    def test_iternext_to_None(self):
+        ref = range(0, 1024, 4)
+        self._test_iternext(ref, 100, None, ref[-1])
+
+    def _test_iternext(self, ref, start_idx, target_idx, expected_last_value):
         ll = sllist(ref)
-        idx = 100
-        for node in ll.nodeat(100).iternext():
+
+        idx = start_idx
+        target = ll.nodeat(target_idx) if target_idx is not None else None
+        last_node = None
+
+        for node in ll.nodeat(start_idx).iternext(to=target):
             self.assertTrue(isinstance(node, sllistnode))
             self.assertEqual(node.value, ref[idx])
             idx += 1
-        self.assertEqual(idx, len(ref))
+            last_node = node
+
+        if expected_last_value is not None:
+            self.assertEqual(last_node.value, expected_last_value)
+        else:
+            self.assertIsNone(last_node)
 
     def test_iter_empty(self):
         ll = sllist()
@@ -1078,8 +1093,8 @@ class testsllist(unittest.TestCase):
         del ll[len(ll) - 1]
         del ref[len(ref) - 1]
         self.assertEqual(list(ll), ref)
-        del ll[(len(ll) - 1) / 2]
-        del ref[(len(ref) - 1) / 2]
+        del ll[(len(ll) - 1) // 2]
+        del ref[(len(ref) - 1) // 2]
         self.assertEqual(list(ll), ref)
 
         def del_item(idx):
