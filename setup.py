@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-VERSION = '0.2'
+VERSION = '0.3'
 
 from distutils.core import setup
 
 modules = ['pyllist.dllist',
-           'pyllist.sllist'
+           'pyllist.sllist',
+           'pyllist.compat'
           ]
 
 setup(name='pyllist',
@@ -27,6 +28,7 @@ setup(name='pyllist',
           'License :: OSI Approved :: MIT License',
           'Operating System :: OS Independent',
           'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 3',
           'Topic :: Software Development :: Libraries :: Python Modules',
         ],
       )

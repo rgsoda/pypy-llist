@@ -1,3 +1,10 @@
+* pyllist-0.3 (unreleased)
+
+  - support for Python 3.x (closes issue #5)
+  - refactoring and fixes of unit tests
+
+-----------------------------------------------------------------------
+
 * pyllist-0.2 (2017-07-23)
 
   - fixed updating of 'first' and 'last' list property (closes issue #3)

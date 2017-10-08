@@ -32,10 +32,10 @@ def ins_sort_llist2(data):
 
 
 data = [6, 5, 32, 8, 234, 5, 1, 9, 0, 33]
-print ins_sort(data)
+print(ins_sort(data))
 
 data_llist = dllist([6, 5, 32, 8, 234, 5, 1, 9, 0, 33])
-print ins_sort_llist(data_llist)
+print(ins_sort_llist(data_llist))
 
 data_llist = dllist([6, 5, 32, 8, 234, 5, 1, 9, 0, 33])
-print ins_sort_llist2(data_llist)
+print(ins_sort_llist2(data_llist))

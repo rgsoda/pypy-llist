@@ -8,7 +8,7 @@ the middle of a sequence.
 For this kind of workload, they can be faster than collections.deque
 or standard Python lists.
 
-This extension requires Python 2.x. It should work with any
+This extension requires Python 2.x or 3.x. It should work with any
 implementation (tested with CPython and PyPy).
 Note however, that for CPython there is a much faster C extension
 module with the same API at http://github.com/ajakubek/python-llist/

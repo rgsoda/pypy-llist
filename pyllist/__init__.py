@@ -1,2 +1,2 @@
-from dllist import dllist, dllistnode
-from sllist import sllist, sllistnode
+from .dllist import dllist, dllistnode
+from .sllist import sllist, sllistnode

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from .compat import cmp, xrange
+
 
 class dllistnode(object):
     __slots__ = ('__prev', '__next', 'value', '__list')
@@ -272,18 +274,53 @@ class dllist(object):
         return self.__size
 
     def __cmp__(self, other):
-        result = len(self) - len(other)
-        if result < 0:
-            return -1
-        elif result > 0:
-            return 1
-
         for sval, oval in zip(self, other):
             result = cmp(sval, oval)
             if result != 0:
                 return result
 
+        result = len(self) - len(other)
+        if result < 0:
+            return -1
+        elif result > 0:
+            return 1
         return 0
+
+    def __eq__(self, other):
+        for sval, oval in zip(self, other):
+            if sval == oval:
+                return True
+        return len(self) == len(other)
+
+    def __ne__(self, other):
+        for sval, oval in zip(self, other):
+            if sval != oval:
+                return True
+        return len(self) != len(other)
+
+    def __lt__(self, other):
+        for sval, oval in zip(self, other):
+            if sval < oval:
+                return True
+        return len(self) < len(other)
+
+    def __le__(self, other):
+        for sval, oval in zip(self, other):
+            if sval <= oval:
+                return True
+        return len(self) <= len(other)
+
+    def __gt__(self, other):
+        for sval, oval in zip(self, other):
+            if sval > oval:
+                return True
+        return len(self) > len(other)
+
+    def __ge__(self, other):
+        for sval, oval in zip(self, other):
+            if sval >= oval:
+                return True
+        return len(self) >= len(other)
 
     def __str__(self):
         if self.__first is not None:

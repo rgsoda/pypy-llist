@@ -6,6 +6,7 @@ from pyllist import sllist
 from pyllist import sllistnode
 from pyllist import dllist
 from pyllist import dllistnode
+from pyllist.compat import cmp, range, xrange
 
 
 class testdllist(unittest.TestCase):

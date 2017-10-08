@@ -139,8 +139,9 @@ Random access to elements using index is O(n).
 
 
    In addition to these methods, :class:`dllist` supports iteration,
-   ``cmp(lst1, lst2)``, constant time ``len(lst)``, ``hash(lst)`` and
-   subscript references ``lst[1234]`` for accessing elements by index.
+   ``cmp(lst1, lst2)`` function (only in Python 2.x), comparison operators,
+   constant time ``len(lst)``, ``hash(lst)`` and subscript references
+   ``lst[1234]`` for accessing elements by index.
 
    Indexed access has O(n) complexity, but most recently accessed node is
    cached, so that accessing its neighbours is O(1).
@@ -475,8 +476,9 @@ Random access to elements using index is O(n).
 
 
    In addition to these methods, :class:`sllist` supports iteration,
-   ``cmp(lst1, lst2)``, constant time ``len(lst)``, ``hash(lst)`` and
-   subscript references ``lst[1234]`` for accessing elements by index.
+   ``cmp(lst1, lst2)`` function (only in Python 2.0), comparison operators,
+   constant time ``len(lst)``, ``hash(lst)`` and subscript references
+   ``lst[1234]`` for accessing elements by index.
 
    Subscript references like ``v = lst[1234]`` return values stored in nodes.
    Negative indices are allowed (to count nodes from the right).
