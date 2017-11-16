@@ -262,11 +262,16 @@ class sllist(object):
     def popleft(self):
         if not self.__first:
             raise ValueError("List is empty")
+
         del_node = self.__first
         self.__first = del_node.next
         if self.__last == del_node:
             self.__last = None
         self.__size -= 1
+
+        del_node._sllistnode__next = None
+        del_node._sllistnode__list = None
+
         return del_node.value
 
     def pop(self):
@@ -275,6 +280,7 @@ class sllist(object):
     def popright(self):
         if not self.__first:
             raise ValueError("List is empty")
+
         del_node = self.__last
         if self.__first == del_node:
             self.__last = None
@@ -284,6 +290,9 @@ class sllist(object):
             prev._sllistnode__next = None
             self.__last = prev
         self.__size -= 1
+
+        del_node._sllistnode__list = None
+
         return del_node.value
 
     def remove(self, node):
@@ -293,6 +302,7 @@ class sllist(object):
             raise ValueError("List is empty")
         if node.list is not self:
             raise ValueError("Node is not element of this list")
+
         prev = self.__get_prev(node)
         if not prev:
             self.popleft()
@@ -301,6 +311,10 @@ class sllist(object):
             if self.__last == node:
                 self.__last = prev
             self.__size -= 1
+
+        node._sllistnode__next = None
+        node._sllistnode__list = None
+
         return node.value
 
     def __add__(self, sequence):

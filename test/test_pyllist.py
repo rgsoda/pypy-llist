@@ -413,6 +413,13 @@ class testdllist(unittest.TestCase):
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
 
+    def test_node_after_pop(self):
+        ll = dllist([1, 2])
+        node = ll.last
+        ll.pop()
+        self.assertIs(node.prev, None)
+        self.assertIs(node.list, None)
+
     def test_popleft(self):
         ref = range(0, 1024, 4)
         ll = dllist(ref)
@@ -431,6 +438,13 @@ class testdllist(unittest.TestCase):
         ll.popleft()
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
+
+    def test_node_after_popleft(self):
+        ll = dllist([1, 2])
+        node = ll.first
+        ll.popleft()
+        self.assertIs(node.next, None)
+        self.assertIs(node.list, None)
 
     def test_popright(self):
         ref = range(0, 1024, 4)
@@ -451,6 +465,13 @@ class testdllist(unittest.TestCase):
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
 
+    def test_node_after_popright(self):
+        ll = dllist([1, 2])
+        node = ll.last
+        ll.pop()
+        self.assertIs(node.prev, None)
+        self.assertIs(node.list, None)
+
     def test_pop_from_empty_list(self):
         ll = dllist()
         self.assertRaises(ValueError, ll.pop)
@@ -464,6 +485,7 @@ class testdllist(unittest.TestCase):
     def test_remove_invalid_node(self):
         ll = dllist([1, 2, 3, 4])
         self.assertRaises(ValueError, ll.remove, dllistnode())
+        self.assertEqual(len(ll), 4)
 
     def test_guards_after_remove(self):
         ll = dllist([1, 2])
@@ -472,6 +494,14 @@ class testdllist(unittest.TestCase):
         ll.remove(ll.first)
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
+
+    def test_node_after_remove(self):
+        ll = dllist([1, 2, 3])
+        node = ll.nodeat(1)
+        ll.remove(node)
+        self.assertIs(node.prev, None)
+        self.assertIs(node.next, None)
+        self.assertIs(node.list, None)
 
     def test_getitem(self):
         ref = range(0, 1024, 4)
@@ -524,6 +554,14 @@ class testdllist(unittest.TestCase):
         del ll[0]
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
+
+    def test_node_after_del(self):
+        ll = dllist([1, 2, 3])
+        node = ll.nodeat(1)
+        del ll[1]
+        self.assertIs(node.prev, None)
+        self.assertIs(node.next, None)
+        self.assertIs(node.list, None)
 
     def test_concat(self):
         a_ref = range(0, 1024, 4)
@@ -1004,6 +1042,12 @@ class testsllist(unittest.TestCase):
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
 
+    def test_node_after_pop(self):
+        ll = sllist([1, 2])
+        node = ll.last
+        ll.pop()
+        self.assertIs(node.list, None)
+
     def test_popleft(self):
         ref = range(0, 1024, 4)
         ll = sllist(ref)
@@ -1022,6 +1066,13 @@ class testsllist(unittest.TestCase):
         ll.popleft()
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
+
+    def test_node_after_popleft(self):
+        ll = sllist([1, 2])
+        node = ll.first
+        ll.popleft()
+        self.assertIs(node.next, None)
+        self.assertIs(node.list, None)
 
     def test_popright(self):
         ref = range(0, 1024, 4)
@@ -1042,6 +1093,12 @@ class testsllist(unittest.TestCase):
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
 
+    def test_node_after_popright(self):
+        ll = sllist([1, 2])
+        node = ll.last
+        ll.pop()
+        self.assertIs(node.list, None)
+
     def test_pop_from_empty_list(self):
         ll = sllist()
         self.assertRaises(ValueError, ll.pop)
@@ -1055,6 +1112,7 @@ class testsllist(unittest.TestCase):
     def test_remove_invalid_node(self):
         ll = sllist([1, 2, 3, 4])
         self.assertRaises(ValueError, ll.remove, sllistnode())
+        self.assertEqual(len(ll), 4)
 
     def test_guards_after_remove(self):
         ll = sllist([1, 2])
@@ -1063,6 +1121,13 @@ class testsllist(unittest.TestCase):
         ll.remove(ll.first)
         self.assertIs(ll.first, None)
         self.assertIs(ll.last, None)
+
+    def test_node_after_remove(self):
+        ll = sllist([1, 2, 3])
+        node = ll.nodeat(1)
+        ll.remove(node)
+        self.assertIs(node.next, None)
+        self.assertIs(node.list, None)
 
     def test_getitem(self):
         ref = range(0, 1024, 4)

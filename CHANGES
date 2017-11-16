@@ -2,6 +2,7 @@
 
   - support for Python 3.x (closes issue #5)
   - refactoring and fixes of unit tests
+  - fixed list size after double removal of a node (closes issue #6)
 
 -----------------------------------------------------------------------
 

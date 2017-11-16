@@ -205,6 +205,9 @@ class dllist(object):
         if node.next is not None:
             node.next._dllistnode__prev = node.prev
 
+        node._dllistnode__next = None
+        node._dllistnode__list = None
+
         if self.__last_access_node is not node:
             if self.__last_access_idx >= 0:
                 self.__last_access_idx -= 1
@@ -228,6 +231,9 @@ class dllist(object):
             node.prev._dllistnode__next = node.next
         if node.next is not None:
             node.next._dllistnode__prev = node.prev
+
+        node._dllistnode__prev = None
+        node._dllistnode__list = None
 
         if self.__last_access_node is node:
             self.__last_access_node = None
@@ -258,6 +264,10 @@ class dllist(object):
             node.prev._dllistnode__next = node.next
         if node.next is not None:
             node.next._dllistnode__prev = node.prev
+
+        node._dllistnode__prev = None
+        node._dllistnode__next = None
+        node._dllistnode__list = None
 
         self.__last_access_node = None
         self.__last_access_idx = -1
