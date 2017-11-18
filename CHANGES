@@ -1,4 +1,4 @@
-* pyllist-0.3 (unreleased)
+* pyllist-0.3 (2017-11-18)
 
   - support for Python 3.x (closes issue #5)
   - refactoring and fixes of unit tests
